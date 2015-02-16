@@ -9,6 +9,8 @@ import be.sandervl.raytracer.services.RayTracerService;
 import be.sandervl.raytracer.services.RayTracerServiceImpl;
 import be.sandervl.raytracer.services.reader.ModelReaderService;
 import be.sandervl.raytracer.services.reader.ModelReaderServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,13 +26,18 @@ public class RayTracerDemo {
     private RayTracerService rayTracerService;
     private ModelReaderService modelReaderService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(RayTracerDemo.class);
+
     public RayTracerDemo() {
 
         this.rayTracerService = new RayTracerServiceImpl();
-        this.modelReaderService= new ModelReaderServiceImpl();
+        this.modelReaderService = new ModelReaderServiceImpl();
     }
 
     public static void main(String s[]) {
+        LOG.debug("Ray Tracer demo started");
+        long start = System.currentTimeMillis();
+
         Camera camera = Camera.getDefaultCamera();
         Scene scene = Scene.getDefaultScene();
         int width = 512;
@@ -40,6 +47,8 @@ public class RayTracerDemo {
 
         List<Triangle> model = demo.modelReaderService.readModel(new File("data/torus.obj"));
         scene.getObjects().addAll(model);
+
+        LOG.debug("Ray Tracer demo counted {} triangles", scene.getObjects().size());
 
         Image result = demo.rayTracerService.traceScene(scene, camera, width, height);
 
@@ -57,6 +66,8 @@ public class RayTracerDemo {
         frame.setVisible(true);
         ClickPixelMouseListener l = new ClickPixelMouseListener(scene, camera, result);
         frame.addMouseListener(l);
+
+        LOG.debug("Ray Tracer demo ended after {} seconds", (System.currentTimeMillis() - start) / 1000);
     }
 
     private static class RenderedImage extends JComponent {
@@ -71,7 +82,7 @@ public class RayTracerDemo {
                 for (int x = 0; x < pixels.length; x++) {
                     Rectangle box = new Rectangle(x, y, 1, 1);
                     Color color = pixels[x][y];
-                    g.setColor(new java.awt.Color(color.getR(),color.getG(),color.getB()));
+                    g.setColor(new java.awt.Color(color.getR(), color.getG(), color.getB()));
                     g.drawLine(x, y, x, y);
                 }
             }
