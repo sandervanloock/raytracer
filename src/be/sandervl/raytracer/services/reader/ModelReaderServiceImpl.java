@@ -2,20 +2,23 @@ package be.sandervl.raytracer.services.reader;
 
 
 import be.sandervl.raytracer.business.math.Vector3D;
+import be.sandervl.raytracer.business.objects.renderables.Renderable;
 import be.sandervl.raytracer.business.objects.renderables.Triangle;
 import be.sandervl.raytracer.business.scene.Color;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ModelReaderServiceImpl implements ModelReaderService {
 
     @Override
-    public List<Triangle> readModel(File file) {
+    public Set<Renderable> readModel(File file) {
         List<Vector3D> vertices = new ArrayList<Vector3D>();
         List<Vector3D> normals = new ArrayList<Vector3D>();
-        List<Triangle> result = new ArrayList<Triangle>();
+        Set<Renderable> result = new HashSet<Renderable>();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line;

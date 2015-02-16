@@ -3,9 +3,8 @@ package be.sandervl.raytracer.business.scene;
 import be.sandervl.raytracer.business.math.Vector3D;
 
 public class Camera {
-    private Vector3D eye, lookat, look;
-    private int w, h, fov;
-    private Vector3D up;
+    private final Vector3D eye, lookat, look, up;
+    private final int fov;
 
 
     public Camera(Vector3D eye, Vector3D lookat, Vector3D up) {
@@ -15,10 +14,6 @@ public class Camera {
         this.fov = 30;
 
         look = new Vector3D(lookat.getX() - eye.getX(), lookat.getY() - eye.getY(), lookat.getZ() - eye.getZ());
-    }
-
-    public static Camera getDefaultCamera(){
-        return new Camera(new Vector3D(10,10,10),new Vector3D(0,0,0),new Vector3D(0,1,0));
     }
 
     public Vector3D getEye() {

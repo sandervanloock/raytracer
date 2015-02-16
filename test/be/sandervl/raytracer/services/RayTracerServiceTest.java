@@ -1,5 +1,6 @@
 package be.sandervl.raytracer.services;
 
+import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.scene.Camera;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Image;
@@ -19,8 +20,8 @@ public class RayTracerServiceTest {
 
     @Test
     public void testTraceScene() {
-        Camera camera = Camera.getDefaultCamera();
-        Scene scene = Scene.getDefaultScene();
+        Camera camera = new Camera(new Vector3D(10,10,10),new Vector3D(0,0,0),new Vector3D(0,1,0));
+        Scene scene = new Scene();
         int width = 512;
         int height = 512;
 

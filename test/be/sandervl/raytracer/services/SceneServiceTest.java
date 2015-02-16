@@ -13,10 +13,8 @@ public class SceneServiceTest {
     private SceneService sceneService;
 
     @Test
-    public void test(){
+    public void test() {
         ArrayList<Renderable> renderables = new ArrayList<Renderable>();
-        sceneService.addRenderables(renderables);
-
 
     }
 }

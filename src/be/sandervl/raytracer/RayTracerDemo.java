@@ -1,12 +1,16 @@
 package be.sandervl.raytracer;
 
-import be.sandervl.raytracer.business.objects.renderables.Triangle;
+import be.sandervl.raytracer.business.math.Vector3D;
+import be.sandervl.raytracer.business.objects.Model;
+import be.sandervl.raytracer.business.objects.lights.PointLight;
 import be.sandervl.raytracer.business.scene.Camera;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Image;
 import be.sandervl.raytracer.business.scene.Scene;
 import be.sandervl.raytracer.services.RayTracerService;
 import be.sandervl.raytracer.services.RayTracerServiceImpl;
+import be.sandervl.raytracer.services.SceneService;
+import be.sandervl.raytracer.services.SceneServiceImpl;
 import be.sandervl.raytracer.services.reader.ModelReaderService;
 import be.sandervl.raytracer.services.reader.ModelReaderServiceImpl;
 import org.slf4j.Logger;
@@ -18,42 +22,46 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.util.List;
 
-public class RayTracerDemo {
+public class RayTracerDemo implements Runnable {
 
     private RayTracerService rayTracerService;
     private ModelReaderService modelReaderService;
+    private SceneService sceneService;
 
     private static final Logger LOG = LoggerFactory.getLogger(RayTracerDemo.class);
 
     public RayTracerDemo() {
-
         this.rayTracerService = new RayTracerServiceImpl();
         this.modelReaderService = new ModelReaderServiceImpl();
+        this.sceneService = new SceneServiceImpl();
     }
 
-    public static void main(String s[]) {
+    @Override
+    public void run() {
         LOG.debug("Ray Tracer demo started");
         long start = System.currentTimeMillis();
 
-        Camera camera = Camera.getDefaultCamera();
-        Scene scene = Scene.getDefaultScene();
+        Vector3D eye = new Vector3D(10, 10, 10);
+        Vector3D lookat = new Vector3D(0, 0, 0);
+        Vector3D up = new Vector3D(0, 1, 0);
+        Camera camera = new Camera(eye, lookat, up);
+        Scene scene = new Scene();
+
         int width = 512;
         int height = 512;
 
-        RayTracerDemo demo = new RayTracerDemo();
-
-        List<Triangle> model = demo.modelReaderService.readModel(new File("data/torus.obj"));
-        scene.getObjects().addAll(model);
+        PointLight light = new PointLight(new Vector3D(0, 20, 20), 0.9f);
+        sceneService.addLightToScene(light, scene);
+        sceneService.addPaneToScene(new Vector3D(0, -1, 0), 5, scene);
+        sceneService.addModelToScene(Model.CILINDER, scene);
+        sceneService.addSphereQuebeToScene(2, 0.1f, true, scene);
 
         LOG.debug("Ray Tracer demo counted {} triangles", scene.getObjects().size());
 
-        Image result = demo.rayTracerService.traceScene(scene, camera, width, height);
+        Image result = rayTracerService.traceScene(scene, camera, width, height);
 
         JFrame frame = new JFrame("Raytracer Demo");
-        // Add a window listner for close button
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -68,6 +76,11 @@ public class RayTracerDemo {
         frame.addMouseListener(l);
 
         LOG.debug("Ray Tracer demo ended after {} seconds", (System.currentTimeMillis() - start) / 1000);
+    }
+
+    public static void main(String s[]) {
+        RayTracerDemo demo = new RayTracerDemo();
+        demo.run();
     }
 
     private static class RenderedImage extends JComponent {

@@ -71,4 +71,8 @@ public class Vector3D {
     public Vector3D multipy(float t) {
         return new Vector3D(this.x*t,this.y*t,this.z*t);
     }
+
+    public String toString(){
+        return String.format("[%s,%s,%s]",x,y,z);
+    }
 }
