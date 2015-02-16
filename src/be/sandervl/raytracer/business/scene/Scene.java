@@ -24,15 +24,15 @@ public class Scene {
     public static Scene getDefaultScene() {
         List<Renderable> objects = new ArrayList<Renderable>();
 
-        int dim = 2;
-        float sphereHeight = 0.4f;
-        for (int i = -dim; i <= dim; i++) {
-            for (int j = 0; j <= 2 * dim; j++) {
-                for (int k = -dim; k <= dim; k++) {
-                    objects.add(new Sphere(new Vector3D(i,j+sphereHeight/2,k), sphereHeight, new Color((float)(i+ dim)/(2*dim),(float)(j)/(2*dim),(float)(k+ dim)/(2*dim))));
-                }
-            }
-        }
+//        int dim = 2;
+//        float sphereHeight = 0.4f;
+//        for (int i = -dim; i <= dim; i++) {
+//            for (int j = 0; j <= 2 * dim; j++) {
+//                for (int k = -dim; k <= dim; k++) {
+//                    objects.add(new Sphere(new Vector3D(i,j+sphereHeight/2,k), sphereHeight, new Color((float)(i+ dim)/(2*dim),(float)(j)/(2*dim),(float)(k+ dim)/(2*dim))));
+//                }
+//            }
+//        }
 
         int dimSquare = 10;
         Vector3D a = new Vector3D(0, 0, 0);
@@ -44,6 +44,15 @@ public class Scene {
         objects.add(new Triangle(a, c, d, c.minus(a).cross(a.minus(d)), new Color(1, 1, 1)));
         objects.add(new Triangle(a, d, e, a.minus(e).cross(a.minus(d)), new Color(1, 1, 1)));
         objects.add(new Triangle(a, e, b, e.minus(a).cross(a.minus(b)), new Color(1, 1, 1)));
+
+        List<Light> lights = new ArrayList<Light>();
+        lights.add(new PointLight(new Vector3D(0, 20, 20), 0.9f));
+        return new Scene(objects, lights);
+    }
+
+
+    public static Scene getEmptyScene() {
+        List<Renderable> objects = new ArrayList<Renderable>();
 
         List<Light> lights = new ArrayList<Light>();
         lights.add(new PointLight(new Vector3D(0, 20, 20), 0.9f));

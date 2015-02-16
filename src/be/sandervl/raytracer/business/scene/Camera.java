@@ -18,7 +18,7 @@ public class Camera {
     }
 
     public static Camera getDefaultCamera(){
-        return new Camera(new Vector3D(20,20,20),new Vector3D(0,0,0),new Vector3D(0,1,0));
+        return new Camera(new Vector3D(10,10,10),new Vector3D(0,0,0),new Vector3D(0,1,0));
     }
 
     public Vector3D getEye() {

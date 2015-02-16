@@ -1,11 +1,14 @@
 package be.sandervl.raytracer;
 
+import be.sandervl.raytracer.business.objects.renderables.Triangle;
 import be.sandervl.raytracer.business.scene.Camera;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Image;
 import be.sandervl.raytracer.business.scene.Scene;
 import be.sandervl.raytracer.services.RayTracerService;
 import be.sandervl.raytracer.services.RayTracerServiceImpl;
+import be.sandervl.raytracer.services.reader.ModelReaderService;
+import be.sandervl.raytracer.services.reader.ModelReaderServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,13 +16,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.List;
 
 public class RayTracerDemo {
 
     private RayTracerService rayTracerService;
+    private ModelReaderService modelReaderService;
 
     public RayTracerDemo() {
+
         this.rayTracerService = new RayTracerServiceImpl();
+        this.modelReaderService= new ModelReaderServiceImpl();
     }
 
     public static void main(String s[]) {
@@ -29,6 +37,9 @@ public class RayTracerDemo {
         int height = 512;
 
         RayTracerDemo demo = new RayTracerDemo();
+
+        List<Triangle> model = demo.modelReaderService.readModel(new File("data/torus.obj"));
+        scene.getObjects().addAll(model);
 
         Image result = demo.rayTracerService.traceScene(scene, camera, width, height);
 
