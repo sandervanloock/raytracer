@@ -7,22 +7,21 @@ import be.sandervl.raytracer.business.objects.renderables.Renderable;
 import be.sandervl.raytracer.business.objects.renderables.Sphere;
 import be.sandervl.raytracer.business.objects.renderables.Triangle;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Scene {
-    List<Renderable> objects;
-    List<Light> lights;
+    Set<Renderable> objects;
+    Set<Light> lights;
     private final Color background;
 
-    public Scene(List<Renderable> objects, List<Light> lights) {
+    public Scene(Set<Renderable> objects, Set<Light> lights) {
         this.objects = objects;
         this.lights = lights;
         background = new Color(0.1f, 0.1f, 0.1f);
     }
 
     public static Scene getDefaultScene() {
-        List<Renderable> objects = new ArrayList<Renderable>();
+        Set<Renderable> objects = new HashSet<Renderable>();
 
 //        int dim = 2;
 //        float sphereHeight = 0.4f;
@@ -45,27 +44,27 @@ public class Scene {
         objects.add(new Triangle(a, d, e, a.minus(e).cross(a.minus(d)), new Color(1, 1, 1)));
         objects.add(new Triangle(a, e, b, e.minus(a).cross(a.minus(b)), new Color(1, 1, 1)));
 
-        List<Light> lights = new ArrayList<Light>();
+        Set<Light> lights = new HashSet<Light>();
         lights.add(new PointLight(new Vector3D(0, 20, 20), 0.9f));
         return new Scene(objects, lights);
     }
 
 
     public static Scene getEmptyScene() {
-        List<Renderable> objects = new ArrayList<Renderable>();
+        Set<Renderable> objects = new HashSet<Renderable>();
 
-        List<Light> lights = new ArrayList<Light>();
+        Set<Light> lights = new HashSet<Light>();
         lights.add(new PointLight(new Vector3D(0, 20, 20), 0.9f));
         return new Scene(objects, lights);
     }
 
 
-    public List<Renderable> getObjects() {
+    public Set<Renderable> getObjects() {
         return objects;
     }
 
-    public List<Light> getLights() {
-        return lights;
+    public Set<Light> getLights() {
+        return Collections.unmodifiableSet(lights);
     }
 
     public Color getBackground() {
