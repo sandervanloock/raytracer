@@ -3,10 +3,9 @@ package be.sandervl.raytracer;
 import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.objects.Model;
 import be.sandervl.raytracer.business.objects.lights.PointLight;
-import be.sandervl.raytracer.business.scene.Camera;
+import be.sandervl.raytracer.business.scene.*;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Image;
-import be.sandervl.raytracer.business.scene.Scene;
 import be.sandervl.raytracer.services.RayTracerService;
 import be.sandervl.raytracer.services.RayTracerServiceImpl;
 import be.sandervl.raytracer.services.SceneService;
@@ -59,7 +58,6 @@ public class RayTracerDemo implements Runnable {
 
         LOG.debug("Ray Tracer demo counted {} triangles", scene.getObjects().size());
 
-        Image result = rayTracerService.traceScene(scene, camera, width, height);
 
         JFrame frame = new JFrame("Raytracer Demo");
         frame.addWindowListener(new WindowAdapter() {
@@ -67,13 +65,19 @@ public class RayTracerDemo implements Runnable {
                 System.exit(0);
             }
         });
-        RenderedImage image = new RenderedImage(result.getPixels());
+        Color[][] pixels = new Color[width][height];
+        for(int i=0;i<pixels.length;i++){
+            for(int j=0;j<pixels[0].length;j++){
+                pixels[i][j] = new Color(0,0,0);
+            }
+        }
+        RenderedImage image = new RenderedImage(pixels);
         frame.add(image);
-        Dimension preferredSize = new Dimension(result.getWidth(), result.getHeight());
+        Dimension preferredSize = new Dimension(width, height);
         frame.setSize(preferredSize);
         frame.setVisible(true);
-        ClickPixelMouseListener l = new ClickPixelMouseListener(scene, camera, result);
-        frame.addMouseListener(l);
+
+        rayTracerService.traceScene(scene, camera, width, height, image);
 
         LOG.debug("Ray Tracer demo ended after {} seconds", (System.currentTimeMillis() - start) / 1000);
     }
@@ -83,24 +87,7 @@ public class RayTracerDemo implements Runnable {
         demo.run();
     }
 
-    private static class RenderedImage extends JComponent {
-        private Color[][] pixels;
 
-        public RenderedImage(Color[][] pixels) {
-            this.pixels = pixels;
-        }
-
-        public void paintComponent(Graphics g) {
-            for (int y = 0; y < pixels[0].length; y++) {
-                for (int x = 0; x < pixels.length; x++) {
-                    Rectangle box = new Rectangle(x, y, 1, 1);
-                    Color color = pixels[x][y];
-                    g.setColor(new java.awt.Color(color.getR(), color.getG(), color.getB()));
-                    g.drawLine(x, y, x, y);
-                }
-            }
-        }
-    }
 
     private static class ClickPixelMouseListener implements MouseListener {
 
