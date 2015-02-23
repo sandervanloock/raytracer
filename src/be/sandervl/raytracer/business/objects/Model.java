@@ -7,7 +7,8 @@ public enum Model {
 
     QUBE ("data/qube.obj"),
     CILINDER("data/cilinder.obj"),
-    TORUS("data/torus.obj");
+    TORUS("data/torus.obj"),
+    MONKEY("data/monkey.obj");
 
     private String fileName;
 
