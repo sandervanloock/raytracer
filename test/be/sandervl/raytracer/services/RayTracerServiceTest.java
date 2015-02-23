@@ -1,10 +1,7 @@
 package be.sandervl.raytracer.services;
 
 import be.sandervl.raytracer.business.math.Vector3D;
-import be.sandervl.raytracer.business.scene.Camera;
-import be.sandervl.raytracer.business.scene.Color;
-import be.sandervl.raytracer.business.scene.Image;
-import be.sandervl.raytracer.business.scene.Scene;
+import be.sandervl.raytracer.business.scene.*;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +22,7 @@ public class RayTracerServiceTest {
         int width = 512;
         int height = 512;
 
-        Image result = rayTracerService.traceScene(scene, camera, width, height);
+        RenderedImage result = rayTracerService.traceScene(scene, camera, width, height);
 
         Assert.assertNotNull(result);
         Assert.assertEquals(512, result.getWidth());

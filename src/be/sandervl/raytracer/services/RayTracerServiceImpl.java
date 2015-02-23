@@ -19,7 +19,7 @@ public class RayTracerServiceImpl implements RayTracerService {
     }
 
     @Override
-    public Image traceScene(Scene scene, Camera camera, int width, int height) {
+    public RenderedImage traceScene(Scene scene, Camera camera, int width, int height) {
         RayTracer rayTracer = new RayTracer(scene, camera, width, height);
         Color[][] pixels = new Color[width][height];
         for (int j = 0; j < height; j++) {
@@ -27,8 +27,7 @@ public class RayTracerServiceImpl implements RayTracerService {
                 pixels[i][j] = rayTracer.renderPixel(scene, i, j);
             }
         }
-        Image image = new Image(pixels);
-        return image;
+        return new RenderedImage(pixels);
     }
 
     @Override
