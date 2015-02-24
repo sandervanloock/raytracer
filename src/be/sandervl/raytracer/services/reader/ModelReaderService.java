@@ -1,9 +1,10 @@
 package be.sandervl.raytracer.services.reader;
 
+import be.sandervl.raytracer.business.objects.renderables.Material;
 import be.sandervl.raytracer.business.objects.renderables.Renderable;
-import be.sandervl.raytracer.business.objects.renderables.Triangle;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -12,4 +13,6 @@ import java.util.Set;
 public interface ModelReaderService {
 
     Set<Renderable> readModel(File file);
+
+    Map<String, Material> readMaterials(File file);
 }

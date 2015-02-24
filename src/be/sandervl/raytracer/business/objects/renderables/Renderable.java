@@ -25,20 +25,19 @@ public abstract class Renderable {
         for (Light light : scene.getLights()) {
             Vector3D l = light.getPosition().minus(point);
             l.normalize();
-            Vector3D offset = l.multipy(0.001f);
+            Vector3D offset = l.multipy(0.01f);
             Ray shadowRay = new Ray(point.add(offset), l);
             if (!shadowRay.intersect(scene)) {
                 Vector3D n = getPointNorm(point);
                 n.normalize();
                 float lambertian = l.dot(n) * light.getIntensity();
-//                float distance = l.norm();
 
                 Vector3D viewDir = camera.getEye().minus(point);
                 viewDir.normalize();
                 Vector3D h = l.add(viewDir).divide(2);
                 h.normalize();
                 float nDotH = n.dot(h);
-                float specular = material.getKs()*(float)Math.pow(nDotH, material.getKn());
+                float specular = material.getKs()*(float)Math.pow(nDotH, material.getNs());
 
 //                distance *= distance;
                 r = result.getR() + lambertian * color.getR() + specular * color.getR();

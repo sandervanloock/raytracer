@@ -8,10 +8,7 @@ import be.sandervl.raytracer.business.objects.renderables.Triangle;
 import be.sandervl.raytracer.business.scene.Color;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ModelReaderServiceImpl implements ModelReaderService {
 
@@ -35,7 +32,7 @@ public class ModelReaderServiceImpl implements ModelReaderService {
                         if (nCoords.length == 4) {
                             Vector3D n = new Vector3D(Float.parseFloat(nCoords[1]), Float.parseFloat(nCoords[2]), Float.parseFloat(nCoords[3]));
                             n.normalize();
-                            normals.add(n.multipy(1));
+                            normals.add(n.multipy(-1));
                         }
                } else if (command.equals("f")){
                         String[] indices = line.split("\\s+");
@@ -49,7 +46,7 @@ public class ModelReaderServiceImpl implements ModelReaderService {
                             String indexC = indices[3];
                             Vector3D c = vertices.get(Integer.parseInt(indexC.split("/")[0])-1);
                             Vector3D nc = normals.get(Integer.parseInt(indexC.split("/")[2])-1);
-                            Color color = new Color(1, 1, 1);
+                            Color color = new Color(1, 0, 0);
                             Material material = new Material(0.5f,0.2f,0.5f,16, color);
                             Triangle triangle = new Triangle(a,b,c,na,nb,nc, material);
                             result.add(triangle);
@@ -61,5 +58,36 @@ public class ModelReaderServiceImpl implements ModelReaderService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public Map<String, Material> readMaterials(File file) {
+        Map<String,Material> result = new HashMap<String, Material>();
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            String line,name;
+            Material material = new Material();
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split("\\s+");
+                String command = split[0];
+                if(command.equals("newmtl")){
+                    material = new Material();
+                    result.put(split[1],material);
+                } else if(command.equals("Ns")){
+                    material.setNs(Float.parseFloat(split[1]));
+                } else if(command.equals("Ka")){
+                    material.setKa(Float.parseFloat(split[1]));
+                } else if(command.equals("Kd")){
+                    material.setKd(Float.parseFloat(split[1]));
+                } else if(command.equals("Ks")){
+                    material.setKs(Float.parseFloat(split[1]));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  result;
     }
 }

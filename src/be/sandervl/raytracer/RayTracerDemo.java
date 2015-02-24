@@ -41,7 +41,7 @@ public class RayTracerDemo implements Runnable {
         LOG.debug("Ray Tracer demo started");
         long start = System.currentTimeMillis();
 
-        Vector3D eye = new Vector3D(5,5,5);
+        Vector3D eye = new Vector3D(500,500,500);
         Vector3D lookat = new Vector3D(0, 0, 0);
         Vector3D up = new Vector3D(0, 1, 0);
         Camera camera = new Camera(eye, lookat, up);
@@ -54,8 +54,9 @@ public class RayTracerDemo implements Runnable {
         sceneService.addLightToScene(light, scene);
         light = new PointLight(new Vector3D(0, 250, 100), 0.1f);
         sceneService.addLightToScene(light, scene);
-        sceneService.addPaneToScene(new Vector3D(0, 0, 0), 5, scene);
-        sceneService.addModelToScene(Model.TEAPOT, scene);
+        sceneService.addPaneToScene(new Vector3D(0, 0, 0), 500, scene);
+        sceneService.addModelToScene(Model.WALLE, scene);
+        sceneService.addSphereToScene(new Vector3D(150f,50f,20f),50f, scene);
 
         LOG.debug("Ray Tracer demo counted {} triangles", scene.getObjects().size());
 
