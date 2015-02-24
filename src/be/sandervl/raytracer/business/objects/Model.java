@@ -9,7 +9,7 @@ public enum Model {
     CILINDER("data/cilinder.obj"),
     TORUS("data/torus.obj"),
     MONKEY("data/monkey.obj"),
-    THEAPOT("data/theapot.obj"),
+    TEAPOT("data/theapot.obj"),
     WALLE("data/Wall-E LowPoly/Wall-Elowpoly.obj");
 
     private String fileName;

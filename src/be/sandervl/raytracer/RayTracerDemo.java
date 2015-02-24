@@ -55,7 +55,7 @@ public class RayTracerDemo implements Runnable {
         light = new PointLight(new Vector3D(0, 250, 100), 0.1f);
         sceneService.addLightToScene(light, scene);
         sceneService.addPaneToScene(new Vector3D(0, 0, 0), 5, scene);
-        sceneService.addModelToScene(Model.THEAPOT, scene);
+        sceneService.addModelToScene(Model.TEAPOT, scene);
 
         LOG.debug("Ray Tracer demo counted {} triangles", scene.getObjects().size());
 
