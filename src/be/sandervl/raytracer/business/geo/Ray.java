@@ -2,6 +2,7 @@ package be.sandervl.raytracer.business.geo;
 
 import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.objects.renderables.Renderable;
+import be.sandervl.raytracer.business.scene.Camera;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Scene;
 
@@ -46,7 +47,7 @@ public class Ray {
         this.t = t;
     }
 
-    public Color trace(Scene scene) {
+    public Color trace(Scene scene, Camera camera) {
         Renderable closestHit = null;
         this.setT(Ray.MAX_T);
         for (Renderable object : scene.getObjects()) {
@@ -55,7 +56,7 @@ public class Ray {
             }
         }
         if (closestHit != null) {
-            return closestHit.shade(scene, this.getIntersectionPoint());
+            return closestHit.shade(scene, camera, this.getIntersectionPoint());
         }
         return scene.getBackground();
     }

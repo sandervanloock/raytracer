@@ -75,4 +75,8 @@ public class Vector3D {
     public String toString(){
         return String.format("[%s,%s,%s]",x,y,z);
     }
+
+    public Vector3D divide(int i) {
+        return new Vector3D(this.getX()/i,this.getY()/i,this.getZ()/i);
+    }
 }

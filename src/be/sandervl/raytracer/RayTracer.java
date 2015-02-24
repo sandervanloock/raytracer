@@ -34,6 +34,6 @@ public class RayTracer {
                         i * Du.getZ() + j * Dv.getZ() + Vp.getZ());
         direction.normalize();
         Ray ray = new Ray(camera.getEye(), direction);
-        return ray.trace(scene);
+        return ray.trace(scene, camera);
     }
 }

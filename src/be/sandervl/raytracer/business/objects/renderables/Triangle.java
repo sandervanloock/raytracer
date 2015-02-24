@@ -6,36 +6,40 @@ import be.sandervl.raytracer.business.scene.Color;
 
 public class Triangle extends Renderable {
 
-    private final Vector3D a, b, c, bMinusA, cMinusA, cMinusB, aMinusC, norm;
-    private final float bMinusACrossCMinusA;
+    private final Vector3D a, b, c;
+    private Vector3D bMinusA, cMinusA, cMinusB, aMinusC, norm, na, nb, nc;
+    private float bMinusACrossCMinusA;
 
-    public Triangle(Vector3D a, Vector3D b, Vector3D c, Color color) {
+    public Triangle(Vector3D a, Vector3D b, Vector3D c, Material material) {
         this.a = a;
         this.b = b;
         this.c = c;
+        this.material = material;
+        calculateNormals();
+        this.na = norm;
+        this.nb = norm;
+        this.nc = norm;
+    }
+
+    private void calculateNormals() {
         this.bMinusA = b.minus(a);
         this.cMinusA = c.minus(a);
         this.cMinusB = c.minus(b);
         this.aMinusC = a.minus(c);
         this.norm = bMinusA.cross(cMinusA);
         this.norm.normalize();
-//        this.d = norm.dot(a);
-        this.color = color;
         bMinusACrossCMinusA = bMinusA.cross(cMinusA).dot(norm);
     }
 
-    public Triangle(Vector3D a, Vector3D b, Vector3D c, Vector3D norm, Color color) {
+    public Triangle(Vector3D a, Vector3D b, Vector3D c, Vector3D na, Vector3D nb, Vector3D nc, Material material) {
         this.a = a;
         this.b = b;
         this.c = c;
-        this.bMinusA = b.minus(a);
-        this.cMinusA = c.minus(a);
-        this.cMinusB = c.minus(b);
-        this.aMinusC = a.minus(c);
-        this.norm = norm;
-        this.norm.normalize();
-        this.color = color;
-        bMinusACrossCMinusA = (bMinusA.cross(cMinusA)).dot(norm);
+        this.na = na;
+        this.nb = nb;
+        this.nc = nc;
+        this.material = material;
+        calculateNormals();
     }
 
     @Override
@@ -62,7 +66,15 @@ public class Triangle extends Renderable {
     }
 
     @Override
-    public Vector3D getNorm(Vector3D point) {
+    public Vector3D getSurfaceNorm(Vector3D point) {
         return norm;
+    }
+
+    @Override
+    public Vector3D getPointNorm(Vector3D point) {
+        float alpha = (cMinusB.cross(point.minus(b))).dot(norm) / bMinusACrossCMinusA;
+        float beta = aMinusC.cross(point.minus(c)).dot(norm) / bMinusACrossCMinusA;
+        float gamma = 1- alpha - beta;
+        return na.multipy(alpha).add(nb.multipy(beta)).add(nc.multipy(gamma));
     }
 }

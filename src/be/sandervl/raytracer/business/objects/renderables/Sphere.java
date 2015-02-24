@@ -9,10 +9,10 @@ public class Sphere extends Renderable {
     private Vector3D origin;
     private float radius;
 
-    public Sphere(Vector3D origin, float radius, Color color) {
+    public Sphere(Vector3D origin, float radius, Material material) {
         this.origin = origin;
         this.radius = radius;
-        this.color=color;
+        this.material = material;
     }
 
     public boolean intersect(Ray ray) {
@@ -44,7 +44,12 @@ public class Sphere extends Renderable {
     }
 
     @Override
-    public Vector3D getNorm(Vector3D point) {
+    public Vector3D getSurfaceNorm(Vector3D point) {
         return point.minus(origin);
+    }
+
+    @Override
+    public Vector3D getPointNorm(Vector3D point) {
+        return getSurfaceNorm(point);
     }
 }

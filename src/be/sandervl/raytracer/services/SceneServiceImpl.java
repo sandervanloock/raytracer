@@ -3,6 +3,7 @@ package be.sandervl.raytracer.services;
 import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.objects.Model;
 import be.sandervl.raytracer.business.objects.lights.Light;
+import be.sandervl.raytracer.business.objects.renderables.Material;
 import be.sandervl.raytracer.business.objects.renderables.Renderable;
 import be.sandervl.raytracer.business.objects.renderables.Sphere;
 import be.sandervl.raytracer.business.objects.renderables.Triangle;
@@ -35,10 +36,11 @@ public class SceneServiceImpl implements SceneService {
         Vector3D c = new Vector3D(0, 0, size).add(origin);
         Vector3D d = new Vector3D(-size, 0, 0).add(origin);
         Vector3D e = new Vector3D(0, 0, -size).add(origin);
-        scene.addRenderable(new Triangle(origin, b, c, b.minus(origin).cross(origin.minus(c)), new Color(1, 1, 1)));
-        scene.addRenderable(new Triangle(origin, c, d, c.minus(origin).cross(origin.minus(d)), new Color(1, 1, 1)));
-        scene.addRenderable(new Triangle(origin, d, e, origin.minus(e).cross(origin.minus(d)), new Color(1, 1, 1)));
-        scene.addRenderable(new Triangle(origin, e, b, e.minus(origin).cross(origin.minus(b)), new Color(1, 1, 1)));
+        Material material = new Material(0.5f,0.2f,0.5f,8,new Color(0.5f,0.5f,0.5f));
+        scene.addRenderable(new Triangle(c, b, origin, material));
+        scene.addRenderable(new Triangle(d, c, origin, material));
+        scene.addRenderable(new Triangle(e, d, origin, material));
+        scene.addRenderable(new Triangle(b, e, origin, material));
         LOG.debug("added PANE in origin {} and size {} to scene", origin, size);
     }
 
@@ -59,7 +61,8 @@ public class SceneServiceImpl implements SceneService {
                     if (colorized) {
                         color = new Color((float) (i + dim) / (2 * dim), (float) (j) / (2 * dim), (float) (k + dim) / (2 * dim));
                     }
-                    scene.addRenderable(new Sphere(new Vector3D(i, j + radius / 2, k), radius, color));
+                    Material material = new Material(0.5f,0.5f,0.5f,16,color);
+                    scene.addRenderable(new Sphere(new Vector3D(i, j + radius / 2, k), radius, material));
                 }
             }
         }
