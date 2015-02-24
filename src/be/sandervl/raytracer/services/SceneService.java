@@ -14,6 +14,8 @@ public interface SceneService {
 
     void addModelToScene(Model model, Scene scene);
 
+    void addSphereToScene(Vector3D origin, float radius, Scene scene);
+
     void addSphereQuebeToScene(int dim, float radius, boolean colorized, Scene scene);
 
     void addLightToScene(Light light, Scene scene);

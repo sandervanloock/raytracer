@@ -53,6 +53,12 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
+    public void addSphereToScene(Vector3D origin, float radius, Scene scene) {
+        Sphere sphere = new Sphere(origin,radius,new Material(0.5f,0.5f,0.5f,16,new Color(1,1,1)));
+        scene.addRenderable(sphere);
+    }
+
+    @Override
     public void addSphereQuebeToScene(int dim, float radius, boolean colorized, Scene scene) {
         for (int i = -dim; i <= dim; i++) {
             for (int j = 0; j <= 2 * dim; j++) {
