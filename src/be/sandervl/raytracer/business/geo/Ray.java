@@ -10,7 +10,7 @@ import be.sandervl.raytracer.business.scene.Scene;
 public class Ray {
     public final static float MAX_T = Float.MAX_VALUE;
     private Vector3D origin, direction;
-    private Vector3D barycentricCoordinatesHit;
+    private Vector3D intersectionPoint;
 
     private float t;
 
@@ -24,7 +24,7 @@ public class Ray {
     }
 
     public boolean intersect(Scene scene) {
-        this.setT(Ray.MAX_T);
+        this.t = Ray.MAX_T;
         for (Renderable object : scene.getObjects()) {
             if (this.intersect(object)) {
                 return true;
@@ -49,17 +49,17 @@ public class Ray {
         this.t = t;
     }
 
-    public Vector3D getBarycentricCoordinatesHit() {
-        return barycentricCoordinatesHit;
+    public Vector3D getIntersectionPoint() {
+        return intersectionPoint;
     }
 
-    public void setBarycentricCoordinatesHit(Vector3D barycentricCoordinatesHit) {
-        this.barycentricCoordinatesHit = barycentricCoordinatesHit;
+    public void setIntersectionPoint(Vector3D intersectionPoint) {
+        this.intersectionPoint = intersectionPoint;
     }
 
     public Color trace(Scene scene, Camera camera) {
         Renderable closestHit = null;
-        this.setT(Ray.MAX_T);
+        this.t = Ray.MAX_T;
         for (Renderable object : scene.getObjects()) {
             if (this.intersect(object)) {
                 closestHit = object;
@@ -72,9 +72,9 @@ public class Ray {
     }
 
     private Color shade(Scene scene, Camera camera, Renderable renderable) {
-        Color result = renderable.getColor(this.getBarycentricCoordinatesHit());
+        Color result = renderable.getColor(this.getIntersectionPoint());
 
-        Vector3D point = this.getIntersectionPoint();
+        Vector3D point = this.origin.add(this.direction.multipy(t));
 
         //ambient light
         result = result.multiply(renderable.getMaterial().getKa());
@@ -85,7 +85,7 @@ public class Ray {
             Vector3D offset = l.multipy(0.01f);
             Ray shadowRay = new Ray(point.add(offset), l);
             if (!shadowRay.intersect(scene)) {
-                Vector3D n = renderable.getPointNorm(this.getBarycentricCoordinatesHit());
+                Vector3D n = renderable.getPointNorm(point);
                 n.normalize();
                 float lambertian = l.dot(n) * light.getIntensity();
 
@@ -100,9 +100,5 @@ public class Ray {
             }
         }
         return result;
-    }
-
-    public Vector3D getIntersectionPoint() {
-        return this.origin.add(this.direction.multipy(getT()));
     }
 }

@@ -39,9 +39,8 @@ public class Sphere extends Renderable {
         if ((t > ray.getT()) || (t < 0)) {
             return false;
         }
-
         ray.setT(t);
-        ray.setBarycentricCoordinatesHit(ray.getIntersectionPoint());
+        ray.setIntersectionPoint(ray.getOrigin().add(ray.getDirection().multipy(t)));
         return true;
     }
 

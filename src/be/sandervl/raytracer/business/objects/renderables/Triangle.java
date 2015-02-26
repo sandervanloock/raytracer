@@ -78,7 +78,7 @@ public class Triangle extends Renderable {
                 return false;
             }
             ray.setT(t);
-            ray.setBarycentricCoordinatesHit(new Vector3D(alpha,beta,gamma));
+            ray.setIntersectionPoint(new Vector3D(alpha, beta, gamma));
             return true;
         }
     }
