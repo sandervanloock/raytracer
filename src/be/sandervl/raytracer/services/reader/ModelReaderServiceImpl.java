@@ -16,7 +16,7 @@ import java.util.*;
 public class ModelReaderServiceImpl implements ModelReaderService {
 
     private static final Color DEFAULT_COLOR = new Color(0.5f, 0.5f, 0.5f);
-    private static final Material DEFAULT_MATERIAL = new Material(0.5f, 0.2f, 0.5f, 16, null);
+    private static final Material DEFAULT_MATERIAL = new Material(0.5f, 0.2f, 0.5f, 16, 0.5f, null);
 
     @Override
     public Set<Renderable> readModel(File file) {

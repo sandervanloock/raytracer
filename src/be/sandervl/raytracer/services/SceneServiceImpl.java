@@ -33,7 +33,7 @@ public class SceneServiceImpl implements SceneService {
         Vector3D c = new Vector3D(0, 0, size).add(origin);
         Vector3D d = new Vector3D(-size, 0, 0).add(origin);
         Vector3D e = new Vector3D(0, 0, -size).add(origin);
-        Material material = new Material(0.5f,0.2f,0.5f,8,null);
+        Material material = new Material(0.5f,0.2f,0.5f,8,0,null);
         scene.addRenderable(new Triangle(c, b, origin, material,new Color(0.7f,0.7f,0.7f)));
         scene.addRenderable(new Triangle(d, c, origin, material,new Color(0.7f,0.7f,0.7f)));
         scene.addRenderable(new Triangle(e, d, origin, material,new Color(0.7f,0.7f,0.7f)));
@@ -50,8 +50,8 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public void addSphereToScene(Vector3D origin, float radius, Scene scene) {
-        Sphere sphere = new Sphere(origin,radius,new Material(0.5f,0.5f,0.5f,16,null),new Color(1,1,1));
+    public void addSphereToScene(Vector3D origin, float radius, Material material, Color color, Scene scene) {
+        Sphere sphere = new Sphere(origin,radius,material,color);
         scene.addRenderable(sphere);
     }
 
@@ -64,7 +64,7 @@ public class SceneServiceImpl implements SceneService {
                     if (colorized) {
                         color = new Color((float) (i + dim) / (2 * dim), (float) (j) / (2 * dim), (float) (k + dim) / (2 * dim));
                     }
-                    Material material = new Material(0.5f,0.5f,0.5f,16,null);
+                    Material material = new Material(0.5f,0.5f,0.5f,16,0,null);
                     scene.addRenderable(new Sphere(new Vector3D(i, j + radius / 2, k), radius, material,color));
                 }
             }

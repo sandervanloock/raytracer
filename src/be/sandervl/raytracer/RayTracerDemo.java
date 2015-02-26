@@ -3,6 +3,7 @@ package be.sandervl.raytracer;
 import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.objects.Model;
 import be.sandervl.raytracer.business.objects.lights.PointLight;
+import be.sandervl.raytracer.business.objects.renderables.Material;
 import be.sandervl.raytracer.business.scene.*;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Image;
@@ -55,8 +56,9 @@ public class RayTracerDemo implements Runnable {
         light = new PointLight(new Vector3D(0, 250, 100), 0.1f);
         sceneService.addLightToScene(light, scene);
         sceneService.addPaneToScene(new Vector3D(0, 0, 0), 500, scene);
-        sceneService.addModelToScene(Model.WALLE, scene);
-        sceneService.addSphereToScene(new Vector3D(150f,50f,20f),50f, scene);
+//        sceneService.addModelToScene(Model.WALLE, scene);
+        sceneService.addSphereToScene(new Vector3D(150f,50f,20f),50f, new Material(0.5f,0.5f,0.5f,16,0.5f,null), new Color(1,1,1), scene);
+        sceneService.addSphereToScene(new Vector3D(20f,50f,150f),50f, new Material(0.5f,0.5f,0.5f,16,0,null), new Color(1,0,0), scene);
 
         LOG.debug("Ray Tracer demo counted {} triangles", scene.getObjects().size());
 

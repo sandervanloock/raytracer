@@ -3,6 +3,8 @@ package be.sandervl.raytracer.services;
 import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.objects.Model;
 import be.sandervl.raytracer.business.objects.lights.Light;
+import be.sandervl.raytracer.business.objects.renderables.Material;
+import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Scene;
 
 /**
@@ -14,7 +16,7 @@ public interface SceneService {
 
     void addModelToScene(Model model, Scene scene);
 
-    void addSphereToScene(Vector3D origin, float radius, Scene scene);
+    void addSphereToScene(Vector3D origin, float radius, Material material, Color color, Scene scene);
 
     void addSphereQuebeToScene(int dim, float radius, boolean colorized, Scene scene);
 

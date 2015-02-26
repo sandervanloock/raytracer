@@ -82,7 +82,7 @@ public class Ray {
         for (Light light : scene.getLights()) {
             Vector3D l = light.getPosition().minus(point);
             l.normalize();
-            Vector3D offset = l.multipy(0.01f);
+            Vector3D offset = l.multipy(0.1f);
             Ray shadowRay = new Ray(point.add(offset), l);
             if (!shadowRay.intersect(scene)) {
                 Vector3D n = renderable.getPointNorm(point);
@@ -97,6 +97,14 @@ public class Ray {
                 float specular = renderable.getMaterial().getKs() * (float) Math.pow(nDotH, renderable.getMaterial().getNs());
 
                 result = result.add(result.multiply(lambertian)).add(result.multiply(specular));
+                float reflectiveCoef = renderable.getMaterial().getR();
+                if(reflectiveCoef >0){
+                    float c1 = -1*n.dot(this.direction);
+                    Vector3D r = this.direction.add(n.multipy(2*c1));
+                    Ray reflectiveRay = new Ray(point,r);
+                    Color reflectiveColor = reflectiveRay.trace(scene,camera);
+                    result = reflectiveColor.multiply(reflectiveCoef).add(result.multiply(1-reflectiveCoef));
+                }
             }
         }
         return result;
