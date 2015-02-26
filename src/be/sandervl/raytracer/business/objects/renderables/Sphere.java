@@ -9,10 +9,11 @@ public class Sphere extends Renderable {
     private Vector3D origin;
     private float radius;
 
-    public Sphere(Vector3D origin, float radius, Material material) {
+    public Sphere(Vector3D origin, float radius, Material material, Color color) {
         this.origin = origin;
         this.radius = radius;
         this.material = material;
+        this.color = color;
     }
 
     public boolean intersect(Ray ray) {
@@ -40,6 +41,7 @@ public class Sphere extends Renderable {
         }
 
         ray.setT(t);
+        ray.setBarycentricCoordinatesHit(ray.getIntersectionPoint());
         return true;
     }
 
@@ -51,5 +53,15 @@ public class Sphere extends Renderable {
     @Override
     public Vector3D getPointNorm(Vector3D point) {
         return getSurfaceNorm(point);
+    }
+
+    @Override
+    public Vector3D getTextureNorm(Vector3D point) {
+        return null;
+    }
+
+    @Override
+    public Color getColor(Vector3D barycentricCoordinatesHit) {
+        return color;
     }
 }

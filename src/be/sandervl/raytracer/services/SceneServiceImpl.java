@@ -3,10 +3,7 @@ package be.sandervl.raytracer.services;
 import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.objects.Model;
 import be.sandervl.raytracer.business.objects.lights.Light;
-import be.sandervl.raytracer.business.objects.renderables.Material;
-import be.sandervl.raytracer.business.objects.renderables.Renderable;
-import be.sandervl.raytracer.business.objects.renderables.Sphere;
-import be.sandervl.raytracer.business.objects.renderables.Triangle;
+import be.sandervl.raytracer.business.objects.renderables.*;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Scene;
 import be.sandervl.raytracer.services.reader.ModelReaderService;
@@ -36,11 +33,11 @@ public class SceneServiceImpl implements SceneService {
         Vector3D c = new Vector3D(0, 0, size).add(origin);
         Vector3D d = new Vector3D(-size, 0, 0).add(origin);
         Vector3D e = new Vector3D(0, 0, -size).add(origin);
-        Material material = new Material(0.5f,0.2f,0.5f,8,new Color(0.5f,0.5f,0.5f));
-        scene.addRenderable(new Triangle(c, b, origin, material));
-        scene.addRenderable(new Triangle(d, c, origin, material));
-        scene.addRenderable(new Triangle(e, d, origin, material));
-        scene.addRenderable(new Triangle(b, e, origin, material));
+        Material material = new Material(0.5f,0.2f,0.5f,8,null);
+        scene.addRenderable(new Triangle(c, b, origin, material,new Color(0.7f,0.7f,0.7f)));
+        scene.addRenderable(new Triangle(d, c, origin, material,new Color(0.7f,0.7f,0.7f)));
+        scene.addRenderable(new Triangle(e, d, origin, material,new Color(0.7f,0.7f,0.7f)));
+        scene.addRenderable(new Triangle(b, e, origin, material,new Color(0.7f,0.7f,0.7f)));
         LOG.debug("added PANE in origin {} and size {} to scene", origin, size);
     }
 
@@ -54,7 +51,7 @@ public class SceneServiceImpl implements SceneService {
 
     @Override
     public void addSphereToScene(Vector3D origin, float radius, Scene scene) {
-        Sphere sphere = new Sphere(origin,radius,new Material(0.5f,0.5f,0.5f,16,new Color(1,1,1)));
+        Sphere sphere = new Sphere(origin,radius,new Material(0.5f,0.5f,0.5f,16,null),new Color(1,1,1));
         scene.addRenderable(sphere);
     }
 
@@ -67,8 +64,8 @@ public class SceneServiceImpl implements SceneService {
                     if (colorized) {
                         color = new Color((float) (i + dim) / (2 * dim), (float) (j) / (2 * dim), (float) (k + dim) / (2 * dim));
                     }
-                    Material material = new Material(0.5f,0.5f,0.5f,16,color);
-                    scene.addRenderable(new Sphere(new Vector3D(i, j + radius / 2, k), radius, material));
+                    Material material = new Material(0.5f,0.5f,0.5f,16,null);
+                    scene.addRenderable(new Sphere(new Vector3D(i, j + radius / 2, k), radius, material,color));
                 }
             }
         }

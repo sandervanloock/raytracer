@@ -7,14 +7,15 @@ public class Material {
     private float ka; //ambient reflection coefficient
     private float ks; //specular reflection coefficient
     private float ns; //specular exponent
-    private Color color;
+    private Texture texture;
 
-    public Material(float kd, float ka, float ks, int ns, Color color) {
+
+    public Material(float kd, float ka, float ks, int ns, Texture texture) {
         this.kd = kd;
         this.ka = ka;
         this.ks = ks;
         this.ns = ns;
-        this.color = color;
+        this.texture = texture;
     }
 
     public Material() {
@@ -53,11 +54,11 @@ public class Material {
         this.ns = ns;
     }
 
-    public Color getColor() {
-        return color;
+    public Texture getTexture() {
+        return texture;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 }

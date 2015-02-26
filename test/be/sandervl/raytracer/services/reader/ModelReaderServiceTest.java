@@ -41,4 +41,16 @@ public class ModelReaderServiceTest {
 
         assertNotNull(actualMaterials.get("Wheel"));
     }
+
+    @Test
+    public void testReadManyMaterialsWithTexture(){
+        Map<String,Material> actualMaterials = modelReaderService.readMaterials(new File("data/Wall-E LowPoly/Wall-Elowpoly.mtl"));
+
+        assertNotNull(actualMaterials);
+        assertEquals(5,actualMaterials.values().size());
+
+        assertNotNull(actualMaterials.get("Wheel"));
+        assertNotNull(actualMaterials.get("Wheel").getTexture());
+
+    }
 }

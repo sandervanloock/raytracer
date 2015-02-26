@@ -2,12 +2,11 @@ package be.sandervl.raytracer.business.scene;
 
 import be.sandervl.raytracer.business.math.MathUtils;
 
-public class Color{
+public class Color {
 
-    private float r,g,b;
+    private float r, g, b;
 
     /**
-     *
      * @param r
      * @param g
      * @param b
@@ -30,4 +29,11 @@ public class Color{
         return b;
     }
 
+    public Color add(Color other) {
+        return new Color(this.r + other.getR(), this.g + other.getG(), this.b + other.getB());
+    }
+
+    public Color multiply(float i) {
+        return new Color(this.r * i, this.g * i, this.b * i);
+    }
 }
