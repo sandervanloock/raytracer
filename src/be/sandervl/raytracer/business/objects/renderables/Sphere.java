@@ -1,6 +1,7 @@
 package be.sandervl.raytracer.business.objects.renderables;
 
 import be.sandervl.raytracer.business.geo.Ray;
+import be.sandervl.raytracer.business.math.MathUtils;
 import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.scene.Color;
 
@@ -60,7 +61,23 @@ public class Sphere extends Renderable {
     }
 
     @Override
-    public Color getColor(Vector3D barycentricCoordinatesHit) {
-        return color;
+    public Color getColor(Vector3D point) {
+        Color result = new Color(0,0,0);
+        if(color !=null){
+            result = result.add(color);
+        } else if(material.getTexture()!= null){
+            float r = point.norm();
+            float theta = (float) Math.acos(point.getZ() / r);
+            float omega = (float) Math.atan(point.getY() / point.getX());
+            if (omega < 0) {
+                omega += Math.PI;
+            }
+            float u = (float) (omega/(2*Math.PI));
+            float v = (float) (theta/(Math.PI));
+
+            Vector3D vt = new Vector3D(v,u,0);
+            result = result.add(material.getTexture().getPoint(vt));
+        }
+        return result;
     }
 }
