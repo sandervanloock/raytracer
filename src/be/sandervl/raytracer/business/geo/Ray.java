@@ -77,7 +77,7 @@ public class Ray {
         Vector3D point = this.origin.add(this.direction.multipy(t));
 
         //ambient light
-        result = result.multiply(renderable.getMaterial().getKa());
+        result = result.multiply(renderable.getMaterial().getKd());
 
         for (Light light : scene.getLights()) {
             Vector3D l = light.getPosition().minus(point);
