@@ -102,12 +102,12 @@ public class Triangle extends Renderable {
     }
 
     @Override
-    public Color getColor(Vector3D barycentricCoordinatesHit) {
+    public Color getColor(Vector3D point) {
         Color result = new Color(0,0,0);
         if(color !=null){
             result = result.add(color);
         } else if(material.getTexture()!= null){
-            Vector3D vt = ta.multipy(barycentricCoordinatesHit.getX()).add(tb.multipy(barycentricCoordinatesHit.getY())).add(tc.multipy(barycentricCoordinatesHit.getZ()));
+            Vector3D vt = ta.multipy(point.getX()).add(tb.multipy(point.getY())).add(tc.multipy(point.getZ()));
             result = result.add(material.getTexture().getPoint(vt));
         }
         return result;
