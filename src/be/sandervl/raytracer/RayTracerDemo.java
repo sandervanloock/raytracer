@@ -4,6 +4,7 @@ import be.sandervl.raytracer.business.math.Vector3D;
 import be.sandervl.raytracer.business.objects.Model;
 import be.sandervl.raytracer.business.objects.lights.PointLight;
 import be.sandervl.raytracer.business.objects.renderables.Material;
+import be.sandervl.raytracer.business.objects.renderables.Texture;
 import be.sandervl.raytracer.business.scene.*;
 import be.sandervl.raytracer.business.scene.Color;
 import be.sandervl.raytracer.business.scene.Image;
@@ -16,12 +17,16 @@ import be.sandervl.raytracer.services.reader.ModelReaderServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class RayTracerDemo implements Runnable {
 
@@ -56,9 +61,16 @@ public class RayTracerDemo implements Runnable {
         light = new PointLight(new Vector3D(0, 250, 100), 0.1f);
         sceneService.addLightToScene(light, scene);
         sceneService.addPaneToScene(new Vector3D(0, 0, 0), 500, scene);
-//        sceneService.addModelToScene(Model.WALLE, scene);
-        sceneService.addSphereToScene(new Vector3D(150f,50f,20f),50f, new Material(0.5f,0.5f,0.5f,16,0.5f,null), new Color(1,1,1), scene);
-        sceneService.addSphereToScene(new Vector3D(20f,50f,150f),50f, new Material(0.5f,0.5f,0.5f,16,0,null), new Color(1,0,0), scene);
+        sceneService.addModelToScene(Model.WALLE, scene);
+        sceneService.addSphereToScene(new Vector3D(150f,50f,20f),50f, new Material(0.5f,0.5f,0.5f,16,0.3f,null), new Color(1,1,1), scene);
+        BufferedImage world = null;
+        try {
+            world = ImageIO.read(new File("data/world.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Texture texture = new Texture(world);
+        sceneService.addSphereToScene(new Vector3D(20f, 50f, 150f), 50f, new Material(1f,0.1f,0,1,0, texture), null, scene);
 
         LOG.debug("Ray Tracer demo counted {} triangles", scene.getObjects().size());
 

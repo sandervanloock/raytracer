@@ -36,4 +36,9 @@ public class Color {
     public Color multiply(float i) {
         return new Color(this.r * i, this.g * i, this.b * i);
     }
+
+    public boolean equals(Object other){
+        Color o = (Color)other;
+        return this.r == o.getR() && this.g == o.getG() && this.b == o.getB();
+    }
 }
